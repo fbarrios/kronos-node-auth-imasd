@@ -2,9 +2,7 @@
 var jwt = require('jsonwebtoken');
 
 var usuarios = new Array();
-usuarios.push('igaray');
-usuarios.push('fbarrios');
-usuarios.push('jvalentin');
+usuarios.push('jbarbosa');
 
 TokenController = function() {
 	
@@ -14,7 +12,10 @@ TokenController.prototype.autenticar = function(req, res) {
 	
 	var token = jwt.sign(req.body, 'PRIVATE_KEY');
 		
-	console.log(token);
+	if(usuarios.indexOf(req.body.username) == -1) {
+		res.status(401).json({ message: 'Usuario inválido' });
+		return;
+	}	
 	
 	res.json({
 		id: token,
@@ -41,11 +42,7 @@ TokenController.prototype.validar = function(req, res) {
 			username: decoded.username
 		});
 		
-		console.log("decoded: " + decoded);
-		console.log("err: " + err);
-	});
-	
-	
+	});	
 }
 		
 
